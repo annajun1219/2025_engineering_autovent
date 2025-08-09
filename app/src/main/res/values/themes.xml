@@ -1,5 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- res/values/themes.xml -->
 <resources>
+    <!-- 최소 베이스 테마: 전역 색 거의 안 건드림 -->
+    <style name="Base.Theme.Autovent" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 필요하면 배경 정도만 -->
+        <item name="android:windowBackground">#F7F7F7</item>
+        <!-- 상태바/내비바는 화면 코드에서 개별 설정할 거면 여기 안 건드려도 됨 -->
+    </style>
 
-    <style name="Theme.Autovent_2025" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- 앱이 참조하는 실제 테마 (Manifest가 이 이름 사용) -->
+    <style name="Theme.Autovent" parent="Base.Theme.Autovent"/>
 </resources>

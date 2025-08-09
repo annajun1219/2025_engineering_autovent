@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">autovent_2025</string>
+
+    <!-- 로그인 화면 -->
+    <string name="app_title">SmartWindow</string>
+    <string name="app_subtitle">창문 환기 자동관리 시스템</string>
+    <string name="sign_in">Sign In</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="action_login">로그인</string>
 </resources>
