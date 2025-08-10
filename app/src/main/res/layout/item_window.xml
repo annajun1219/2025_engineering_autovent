@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="93dp"
+    android:layout_marginTop="12dp"
+    app:cardCornerRadius="25dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="#DBE2EF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- 왼쪽 배지 -->
+        <TextView
+            android:id="@+id/tvBadge"
+            android:layout_width="80dp"
+            android:layout_height="53dp"
+            android:gravity="center"
+            android:text="중앙\n도서관"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:background="@drawable/bg_badge_pill"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- 제목 -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="1층 창문A"
+            android:textColor="#000000"
+            android:textSize="28sp"
+            android:paddingStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/tvBadge"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/swOpen"
+            app:layout_constraintHorizontal_bias="0"/>
+
+        <!-- 우측 토글 (이미지 기반) -->
+
+        <!-- 상태 텍스트 (열림/닫힘) -->
+
+        <CheckBox
+            android:id="@+id/swOpen"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/switch_selector"
+            android:button="@null"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTitle"
+            app:layout_constraintVertical_bias="0.545" />
+
+        <TextView
+            android:id="@+id/tvState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="열림"
+            android:textColor="#96000000"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/swOpen"
+            app:layout_constraintStart_toEndOf="@id/swOpen"
+            app:layout_constraintTop_toTopOf="@id/swOpen" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
