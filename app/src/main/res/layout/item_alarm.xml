@@ -6,10 +6,16 @@
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
     app:cardCornerRadius="15dp"
-    app:cardUseCompatPadding="false"
     app:cardBackgroundColor="#DBE2EF"
     app:strokeWidth="0dp"
-    app:strokeColor="@android:color/transparent">
+    app:strokeColor="@android:color/transparent"
+    android:clickable="false"
+    android:focusable="false"
+    android:addStatesFromChildren="false"
+    android:foreground="@null"
+    android:stateListAnimator="@null"
+    app:rippleColor="@android:color/transparent"
+    app:cardUseCompatPadding="false">
 
     <!-- 바깥 카드 내부 컨테이너 -->
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +43,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="-4dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@android:color/transparent"
         android:src="@drawable/ic_setting_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +64,13 @@
     android:layout_marginTop="10dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:clickable="false"
+    android:focusable="false"
+    android:addStatesFromChildren="false"
+    android:foreground="@null"
+    android:stateListAnimator="@null"
+    app:rippleColor="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -100,6 +112,7 @@
             android:button="@null"
             android:background="@drawable/switch_selector"
             android:backgroundTint="@null"
+            android:duplicateParentState="false"
             android:padding="0dp"
             android:clickable="true"
             android:focusable="true"

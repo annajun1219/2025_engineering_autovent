@@ -31,12 +31,8 @@ public class AlarmActivity extends AppCompatActivity {
         adapter = new AlarmAdapter(this, new AlarmAdapter.AlarmListener() {
             @Override
             public void onToggle(Alarm alarm) {
-                Alarm changed = new Alarm(
-                        alarm.id, alarm.label, alarm.time, !alarm.enabled,
-                        alarm.openMinutes, alarm.repeatText, alarm.mode,
-                        alarm.cycleHours, alarm.timeHours, alarm.startTime
-                );
-                adapter.update(changed);
+                // ✅ 리스트 갱신 금지: 스위치는 어댑터에서 체크박스만 바꾸도록
+                // (서버 붙이면 여기서 API만 호출)
             }
 
             @Override
@@ -48,6 +44,13 @@ public class AlarmActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(adapter);
 
+        // 🔻 깜빡임 방지: 변경 애니메이션 끄기(둘 중 하나 선택)
+        RecyclerView.ItemAnimator animator = rv.getItemAnimator();
+        if (animator instanceof SimpleItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+        }
+        // 또는 완전 차단:
+        // rv.setItemAnimator(null);
 
         // 더미 데이터
         adapter.submitList(mockAlarms());
@@ -56,27 +59,19 @@ public class AlarmActivity extends AppCompatActivity {
     private List<Alarm> mockAlarms() {
         List<Alarm> list = new ArrayList<>();
         list.add(new Alarm(
-                "alarm-1",
-                "알람1",
+                "alarm-1", "알람1",
                 LocalTime.of(10, 0),
                 true,
-                60,                 // openMinutes
-                "매일",
-                "default",
-                4.0f,               // cycleHours
-                0.5f,               // timeHours (=30분)
+                60, "매일",
+                "default", 4.0f, 0.5f,
                 LocalDateTime.now().withHour(12).withMinute(0)
         ));
         list.add(new Alarm(
-                "alarm-2",
-                "알람2",
+                "alarm-2", "알람2",
                 LocalTime.of(7, 30),
                 false,
-                30,
-                "주중",
-                "dust",
-                6.0f,
-                0.25f,
+                30, "주중",
+                "dust", 6.0f, 0.25f,
                 LocalDateTime.now().withHour(6).withMinute(0)
         ));
         return list;
