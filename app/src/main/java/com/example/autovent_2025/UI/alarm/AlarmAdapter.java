@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;      // ✅ 변경
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,11 +52,14 @@ public class AlarmAdapter extends ListAdapter<Alarm, AlarmAdapter.VH> {
         h.tvTime.setText(a.timeText());
         h.tvSub.setText(a.subText());
 
-        h.swEnable.setSelected(a.enabled);
-        h.swEnable.setActivated(a.enabled);
+        // ✅ CheckBox는 checked 상태 사용
+        h.swEnable.setOnCheckedChangeListener(null); // 리스너 중복 방지
+        h.swEnable.setChecked(a.enabled);
 
-        h.swEnable.setOnClickListener(v -> {
-            if (listener != null) listener.onToggle(a);
+        h.swEnable.setOnCheckedChangeListener((btn, checked) -> {
+            // 프로그램적으로 setChecked 호출 때는 무시 (사용자 탭만 처리)
+            if (!btn.isPressed()) return;
+            if (listener != null) listener.onToggle(a); // AlarmActivity에서 새 객체로 update
         });
 
         h.btnSettings.setOnClickListener(v -> {
@@ -63,12 +67,14 @@ public class AlarmAdapter extends ListAdapter<Alarm, AlarmAdapter.VH> {
         });
     }
 
+    /** 특정 알람 상태를 갱신하고 강제로 UI 반영 */
     public void update(Alarm updated) {
         List<Alarm> curr = new ArrayList<>(getCurrentList());
         for (int i = 0; i < curr.size(); i++) {
             if (TextUtils.equals(curr.get(i).id, updated.id)) {
                 curr.set(i, updated);
-                submitList(curr);
+                submitList(null);                    // 강제 리프레시
+                submitList(new ArrayList<>(curr));
                 return;
             }
         }
@@ -90,7 +96,8 @@ public class AlarmAdapter extends ListAdapter<Alarm, AlarmAdapter.VH> {
 
     public static class VH extends RecyclerView.ViewHolder {
         public final TextView tvLabel, tvTime, tvSub;
-        public final ImageButton btnSettings, swEnable;
+        public final ImageButton btnSettings;
+        public final CheckBox swEnable;            // ✅ 변경
         public final ImageView ivAlarm;
 
         public VH(@NonNull View itemView) {

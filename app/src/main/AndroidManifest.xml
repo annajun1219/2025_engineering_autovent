@@ -32,6 +32,14 @@
         <!-- 창문 관리 화면 -->
         <activity
             android:name=".UI.window.WindowActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Autovent">
+        </activity>
+
+        <!-- 알람 화면 -->
+        <activity
+            android:name=".UI.alarm.AlarmActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Autovent">
@@ -39,7 +47,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
     </application>

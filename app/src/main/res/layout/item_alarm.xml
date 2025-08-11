@@ -93,13 +93,19 @@
             android:layout_marginStart="12dp" />
 
         <!-- 스위치 (이미지 셀렉터 쓰는 경우) -->
-        <ImageButton
+        <CheckBox
             android:id="@+id/swEnable"
             android:layout_width="56dp"
             android:layout_height="32dp"
+            android:button="@null"
             android:background="@drawable/switch_selector"
+            android:backgroundTint="@null"
+            android:padding="0dp"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <!-- 서브 텍스트(2줄) -->
         <TextView

@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.example.autovent_2025.Model.Alarm;
 import com.example.autovent_2025.R;
@@ -30,9 +31,12 @@ public class AlarmActivity extends AppCompatActivity {
         adapter = new AlarmAdapter(this, new AlarmAdapter.AlarmListener() {
             @Override
             public void onToggle(Alarm alarm) {
-                // 로컬 토글만 반영
-                alarm.enabled = !alarm.enabled;
-                adapter.update(alarm);
+                Alarm changed = new Alarm(
+                        alarm.id, alarm.label, alarm.time, !alarm.enabled,
+                        alarm.openMinutes, alarm.repeatText, alarm.mode,
+                        alarm.cycleHours, alarm.timeHours, alarm.startTime
+                );
+                adapter.update(changed);
             }
 
             @Override
@@ -43,6 +47,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(adapter);
+
 
         // 더미 데이터
         adapter.submitList(mockAlarms());
