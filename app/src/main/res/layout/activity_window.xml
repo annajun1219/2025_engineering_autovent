@@ -70,26 +70,73 @@
                     android:paddingEnd="8dp">
 
                     <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:text="과학관"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:text="프라임관"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:text="명신관"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:text="순헌관"/>
-
-                    <com.google.android.material.chip.Chip
-                        style="@style/Widget.Material3.Chip.Assist"
-                        android:text="중앙도서관"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="과학관"
+                        android:checkable="true"
+                        app:checkedIconVisible="false"
+                        app:rippleColor="@android:color/transparent"
+                        app:chipBackgroundColor="#DBE2EF"
+                        app:chipCornerRadius="50dp"
                         app:chipStrokeWidth="1dp"
-                        app:chipStrokeColor="#416CBA"/>
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="프라임관"
+                        android:checkable="true"
+                        app:checkedIconVisible="false"
+                        app:rippleColor="@android:color/transparent"
+                        app:chipBackgroundColor="#DBE2EF"
+                        app:chipCornerRadius="50dp"
+                        app:chipStrokeWidth="1dp"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="명신관"
+                        android:checkable="true"
+                        app:checkedIconVisible="false"
+                        app:rippleColor="@android:color/transparent"
+                        app:chipBackgroundColor="#DBE2EF"
+                        app:chipCornerRadius="50dp"
+                        app:chipStrokeWidth="1dp"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="순헌관"
+                        android:checkable="true"
+                        app:checkedIconVisible="false"
+                        app:rippleColor="@android:color/transparent"
+                        app:chipBackgroundColor="#DBE2EF"
+                        app:chipCornerRadius="50dp"
+                        app:chipStrokeWidth="1dp"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="중앙도서관"
+                        android:checkable="true"
+                        app:checkedIconVisible="false"
+                        app:rippleColor="@android:color/transparent"
+                        app:chipBackgroundColor="#DBE2EF"
+                        app:chipCornerRadius="50dp"
+                        app:chipStrokeWidth="1dp"
+                        app:chipStrokeColor="@color/chip_stroke_selector" />
+
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
 

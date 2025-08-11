@@ -16,13 +16,10 @@
         <!-- 로그인 화면: 앱 시작 액티비티 -->
         <activity
             android:name=".UI.LoginActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.Autovent">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <!-- 메인 화면 -->
@@ -31,6 +28,19 @@
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.Autovent" />
+
+        <!-- 창문 관리 화면 -->
+        <activity
+            android:name=".UI.window.WindowActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Autovent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
     </application>
 </manifest>
