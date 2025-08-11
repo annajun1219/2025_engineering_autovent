@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="15dp"
+    app:cardUseCompatPadding="false"
+    app:cardBackgroundColor="#DBE2EF"
+    app:strokeWidth="0dp"
+    app:strokeColor="@android:color/transparent">
+
+    <!-- 바깥 카드 내부 컨테이너 -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp">
+
+<!-- 좌상단 라벨: 알람1 -->
+<TextView
+    android:id="@+id/tvLabel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="알람1"
+    android:textSize="13sp"
+    android:textColor="#96000000"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<!-- 우상단 설정 버튼(톱니) -->
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="-4dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_setting_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#7A7F8A" />
+
+<!-- 안쪽 흰 카드 -->
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/innerCard"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:strokeWidth="0dp"
+    app:strokeColor="@android:color/transparent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvLabel"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:padding="16dp">
+
+        <!-- 알람 아이콘(파랑) -->
+
+        <!-- 시간 텍스트 -->
+
+        <ImageView
+            android:id="@+id/ivAlarm"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/ic_alarm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="#3366CC" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="오전 10 : 00"
+            android:textSize="28sp"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif"
+            app:layout_constraintStart_toEndOf="@id/ivAlarm"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/swEnable"
+            android:layout_marginStart="12dp" />
+
+        <!-- 스위치 (이미지 셀렉터 쓰는 경우) -->
+        <ImageButton
+            android:id="@+id/swEnable"
+            android:layout_width="56dp"
+            android:layout_height="32dp"
+            android:background="@drawable/switch_selector"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 서브 텍스트(2줄) -->
+        <TextView
+            android:id="@+id/tvSub"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="창문 개방 지속 시간 : 60분\n반복 : 매일"
+            android:textSize="15sp"
+            android:lineHeight="18sp"
+            android:textColor="#96000000"
+            app:layout_constraintStart_toStartOf="@id/tvTime"
+            app:layout_constraintTop_toBottomOf="@id/tvTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
