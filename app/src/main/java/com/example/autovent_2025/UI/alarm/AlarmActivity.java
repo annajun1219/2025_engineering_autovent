@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.example.autovent_2025.Model.Alarm;
 import com.example.autovent_2025.R;
+import com.example.autovent_2025.UI.main.MainActivity;
+import com.example.autovent_2025.UI.window.WindowActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -41,28 +44,18 @@ public class AlarmActivity extends AppCompatActivity {
                     for (int i = 0; i < alarms.size(); i++) {
                         Alarm old = alarms.get(i);
                         if (old.id.equals(id)) {
-                            // ✅ 새 객체로 교체 (불변 패턴)
+                            // 새 객체로 교체
                             Alarm updated = new Alarm(
-                                    old.id,
-                                    old.label,
-                                    LocalTime.of(hour, minute),
-                                    old.enabled,
-                                    openMin,
-                                    repeat,
-                                    old.mode,
-                                    old.cycleHours,
-                                    old.timeHours,
-                                    old.startTime
+                                    old.id, old.label, LocalTime.of(hour, minute), old.enabled,
+                                    openMin, repeat, old.mode, old.cycleHours, old.timeHours, old.startTime
                             );
                             alarms.set(i, updated);
                             break;
                         }
                     }
-                    // ✅ 새로운 리스트 인스턴스로 submit (DiffUtil 트리거)
                     adapter.submitList(new ArrayList<>(alarms));
                 }
             });
-
 
     // 추가 결과 받기
     private final ActivityResultLauncher<Intent> addLauncher =
@@ -78,10 +71,8 @@ public class AlarmActivity extends AppCompatActivity {
 
                     Alarm newAlarm = new Alarm(
                             id, label != null ? label : "알람",
-                            LocalTime.of(hour, minute),
-                            true,
-                            openMin, repeat,
-                            "default", 4.0f, 0.5f, LocalDateTime.now()
+                            LocalTime.of(hour, minute), true,
+                            openMin, repeat, "default", 4.0f, 0.5f, LocalDateTime.now()
                     );
                     alarms.add(newAlarm);
                     adapter.submitList(new ArrayList<>(alarms));
@@ -103,7 +94,6 @@ public class AlarmActivity extends AppCompatActivity {
 
             @Override
             public void onOpenSettings(Alarm alarm) {
-                // 편집 화면으로 이동 (결과 받기)
                 Intent intent = new Intent(AlarmActivity.this, AlarmEditActivity.class);
                 intent.putExtra("alarmId", alarm.getId());
                 intent.putExtra("hour", alarm.getTime().getHour());
@@ -131,25 +121,54 @@ public class AlarmActivity extends AppCompatActivity {
             Intent intent = new Intent(AlarmActivity.this, AlarmAddActivity.class);
             addLauncher.launch(intent);
         });
+
+        // ===== 하단바 네비게이션 =====
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_alarm); // 현재 탭 표시
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_alarm) return true; // 현재 화면
+
+                if (id == R.id.nav_home) {
+                    Intent i = new Intent(this, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+                if (id == R.id.nav_window) {
+                    Intent i = new Intent(this, WindowActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+                return false;
+            });
+        }
+        // ============================
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 다른 탭에서 돌아와도 선택 상태 유지
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setSelectedItemId(R.id.nav_alarm);
     }
 
     private List<Alarm> mockAlarms() {
         List<Alarm> list = new ArrayList<>();
         list.add(new Alarm(
-                "alarm-1", "알람1",
-                LocalTime.of(10, 0),
-                true,
-                60, "매일",
-                "default", 4.0f, 0.5f,
-                LocalDateTime.now().withHour(12).withMinute(0)
+                "alarm-1", "알람1", LocalTime.of(10, 0),
+                true, 60, "매일",
+                "default", 4.0f, 0.5f, LocalDateTime.now().withHour(12).withMinute(0)
         ));
         list.add(new Alarm(
-                "alarm-2", "알람2",
-                LocalTime.of(7, 30),
-                false,
-                30, "주중",
-                "dust", 6.0f, 0.25f,
-                LocalDateTime.now().withHour(6).withMinute(0)
+                "alarm-2", "알람2", LocalTime.of(7, 30),
+                false, 30, "주중",
+                "dust", 6.0f, 0.25f, LocalDateTime.now().withHour(6).withMinute(0)
         ));
         return list;
     }

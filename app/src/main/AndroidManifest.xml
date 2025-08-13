@@ -16,10 +16,13 @@
         <!-- 로그인 화면: 앱 시작 액티비티 -->
         <activity
             android:name=".UI.LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Autovent">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- 메인 화면 -->
@@ -43,13 +46,9 @@
         <!-- 알람 화면 -->
         <activity
             android:name=".UI.alarm.AlarmActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.Autovent">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>
