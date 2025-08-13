@@ -32,6 +32,22 @@ public class Alarm {
         this.startTime = startTime;
     }
 
+    // ===== AlarmActivity/Adapter에서 기대하는 게터들 =====
+    public String getId() { return id; }
+    public String getLabel() { return label; }
+    public LocalTime getTime() { return time; }
+    public boolean isEnabled() { return enabled; }
+    public int getOpenMinutes() { return openMinutes; }
+    // repeatText를 getRepeat()로 노출 (호환용)
+    public String getRepeat() { return repeatText; }
+
+    // (필요시) 기타 필드 게터
+    public String getMode() { return mode; }
+    public float getCycleHours() { return cycleHours; }
+    public float getTimeHours() { return timeHours; }
+    public LocalDateTime getStartTime() { return startTime; }
+
+    // ===== 기존 포맷팅 유틸 =====
     public String timeText() {
         if (time == null) return "-- : --";
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("a h : mm");
