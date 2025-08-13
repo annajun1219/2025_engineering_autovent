@@ -76,38 +76,38 @@
                         android:textSize="42sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvHiLo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="H:24°  L:18°"
                         android:textColor="#E6FFFFFF"
                         android:textSize="12sp"
-                        android:layout_marginTop="2dp"
                         app:layout_constraintStart_toStartOf="@id/tvTemp"
-                        app:layout_constraintTop_toBottomOf="@id/tvTemp"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvTemp" />
 
                     <TextView
                         android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="Montreal, Canada"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
-                        android:layout_marginTop="4dp"
                         app:layout_constraintStart_toStartOf="@id/tvTemp"
-                        app:layout_constraintTop_toBottomOf="@id/tvHiLo"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvHiLo" />
 
                     <ImageView
                         android:id="@+id/ivCloud"
                         android:layout_width="92dp"
                         android:layout_height="92dp"
                         android:src="@drawable/ic_cloud_rain"
-                        app:tint="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:tint="@null" />
 
                     <TextView
                         android:id="@+id/tvWeatherDesc"
@@ -117,7 +117,7 @@
                         android:textColor="#E6FFFFFF"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -141,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -191,7 +192,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -304,27 +306,28 @@
                     app:cardBackgroundColor="#E9EEF7">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="181dp"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 --><!-- 최소 높이 지정 -->
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="현재 모드 :"
                             android:textColor="#7A7F8A"
-                            android:textSize="13sp"/>
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/tvCurrentMode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
                             android:text="자동"
-                            android:textStyle="bold"
-                            android:textSize="26sp"
                             android:textColor="#111827"
-                            android:layout_marginTop="6dp"/>
+                            android:textSize="26sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -341,7 +344,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="12dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
 
                         <!-- 자동 모드 -->
                         <LinearLayout
