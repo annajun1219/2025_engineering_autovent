@@ -21,4 +21,19 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
 
+
+    <!-- 오른쪽 아래 고정 FAB -->
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추가"
+        android:textColor="#111111"
+        android:textAllCaps="false"
+        app:backgroundTint="#DBE2EF"
+        app:cornerRadius="30dp"
+        app:rippleColor="@android:color/transparent"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
