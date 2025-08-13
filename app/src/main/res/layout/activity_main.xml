@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F4F8"
+    android:background="#F8F9FE"
     tools:context="com.example.autovent_2025.UI.main.MainActivity">
 
     <!-- 스크롤 영역 -->
