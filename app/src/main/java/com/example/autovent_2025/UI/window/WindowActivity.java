@@ -1,5 +1,6 @@
 package com.example.autovent_2025.UI.window;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.autovent_2025.Model.WindowItem;
 import com.example.autovent_2025.R;
+import com.example.autovent_2025.UI.alarm.AlarmActivity;
+import com.example.autovent_2025.UI.main.MainActivity;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -46,10 +50,37 @@ public class WindowActivity extends AppCompatActivity {
         rvWindows = findViewById(R.id.rvWindows);
         chipGroup = findViewById(R.id.chipGroup);
 
+        // ===== 하단바 네비게이션 설정 =====
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_window); // 현재 탭 하이라이트
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_window) return true; // 현재 화면
+
+                if (id == R.id.nav_home) {
+                    Intent i = new Intent(this, MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+                if (id == R.id.nav_alarm) {
+                    Intent i = new Intent(this, AlarmActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+                return false;
+            });
+        }
+        // ==================================
+
         loadDummy(); // 나중에 Retrofit으로 교체
 
         adapter = new WindowAdapter(this, viewList, (pos, isOpen, item) -> {
-            // TODO: 나중에 백엔드 연동 시 여기서 API 호출 (개별 창문 상태 업데이트)
+            // TODO: 백엔드 연동 시 개별 창문 상태 업데이트 API 호출
         });
         rvWindows.setLayoutManager(new LinearLayoutManager(this));
         rvWindows.setAdapter(adapter);
@@ -80,6 +111,14 @@ public class WindowActivity extends AppCompatActivity {
         });
 
         applyFilter();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 다른 탭에서 돌아왔을 때도 선택 상태 유지
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setSelectedItemId(R.id.nav_window);
     }
 
     private void loadDummy() {

@@ -171,8 +171,6 @@
             </LinearLayout>
 
 
-
-
             <!-- 창문 리스트 -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvWindows"
@@ -183,4 +181,17 @@
                 android:nestedScrollingEnabled="false"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- 하단 네비게이션 -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        app:labelVisibilityMode="labeled"
+        app:itemIconTint="@color/bottom_nav_color_selector"
+        app:itemTextColor="@color/bottom_nav_color_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:menu="@menu/menu_bottom_nav"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

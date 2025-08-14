@@ -1,124 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <!-- 스크롤 가능한 입력 영역 -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="알람 편집"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <!-- 시간 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="시간"
-            android:layout_marginTop="16dp"/>
-        <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:timePickerMode="spinner" />
-
-        <!-- 개방 지속(분) -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="창문 개방 지속(분)"
-            android:layout_marginTop="16dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxCornerRadiusTopStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxStrokeColor="#DBE2EF"
-            app:hintEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etOpenMin"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:inputType="number"
-                android:textColor="#111111"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="12dp"
-                android:hint="60" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- 반복 -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="반복"
-            android:layout_marginTop="16dp"/>
-        <Spinner
-            android:id="@+id/spRepeat"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-
-        <!-- 버튼들 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="180dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-
-            <Button
-                android:id="@+id/btnCancel"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="취소"
-                android:textColor="#111111"
-                android:textAllCaps="false"
-                app:backgroundTint="#DBE2EF"
-                app:cornerRadius="30dp"
-                app:rippleColor="@android:color/transparent" />
+                android:text="알람 편집"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btnDelete"
+            <!-- 시간 -->
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="알람 삭제"
-                android:textColor="#111111"
-                android:textAllCaps="false"
-                android:layout_marginLeft="12dp"
-                app:backgroundTint="#DBE2EF"
-                app:cornerRadius="30dp"
-                app:rippleColor="@android:color/transparent"/>
+                android:text="시간"
+                android:layout_marginTop="16dp"/>
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:descendantFocusability="afterDescendants" />
 
-            <Button
-                android:id="@+id/btnSave"
+            <!-- 개방 지속(분) -->
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="저장"
-                android:textColor="#111111"
-                android:textAllCaps="false"
-                android:layout_marginLeft="12dp"
-                app:backgroundTint="#DBE2EF"
-                app:cornerRadius="30dp"
-                app:rippleColor="@android:color/transparent"/>
+                android:text="창문 개방 지속(분)"
+                android:layout_marginTop="16dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="#DBE2EF">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etOpenMin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:digits="0123456789"
+                    android:singleLine="true"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#111111"
+                    android:hint="60"
+                    android:imeOptions="actionDone"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 반복 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="반복"
+                android:layout_marginTop="16dp"/>
+            <Spinner
+                android:id="@+id/spRepeat"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"/>
         </LinearLayout>
+    </ScrollView>
 
+    <!-- 하단 고정 버튼 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textColor="#111111"
+            android:textAllCaps="false"
+            app:backgroundTint="#DBE2EF"
+            app:cornerRadius="30dp"
+            app:rippleColor="@android:color/transparent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="알람 삭제"
+            android:textColor="#111111"
+            android:textAllCaps="false"
+            android:layout_marginLeft="12dp"
+            app:backgroundTint="#DBE2EF"
+            app:cornerRadius="30dp"
+            app:rippleColor="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            android:textColor="#111111"
+            android:textAllCaps="false"
+            android:layout_marginLeft="12dp"
+            app:backgroundTint="#DBE2EF"
+            app:cornerRadius="30dp"
+            app:rippleColor="@android:color/transparent"/>
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

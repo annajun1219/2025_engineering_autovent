@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F4F8"
-    tools:context=".MainActivity">
+    android:background="#F8F9FE"
+    tools:context="com.example.autovent_2025.UI.main.MainActivity">
 
     <!-- 스크롤 영역 -->
     <androidx.core.widget.NestedScrollView
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:fillViewport="true"
         android:paddingBottom="72dp">
 
         <LinearLayout
@@ -33,9 +34,9 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/ic_profile"
+                    app:tint="#6B7280"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="#6B7280" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tvUserName"
@@ -45,34 +46,13 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#111827"
+                    android:layout_marginStart="8dp"
                     app:layout_constraintStart_toEndOf="@id/ivProfile"
                     app:layout_constraintTop_toTopOf="@id/ivProfile"
-                    android:layout_marginStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@id/ivProfile" />
-
-                <ImageButton
-                    android:id="@+id/btnMore"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_more"
-                    app:tint="#6B7280"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/btnBell"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_bell"
-                    app:tint="#6B7280"
-                    app:layout_constraintEnd_toStartOf="@id/btnMore"
-                    app:layout_constraintTop_toTopOf="@id/btnMore"
-                    android:layout_marginEnd="6dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- 날씨 카드 (바깥 카드 + 안쪽 흰 카드 포맷 유지) -->
+            <!-- 날씨 카드 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,38 +76,38 @@
                         android:textSize="42sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvHiLo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="H:24°  L:18°"
                         android:textColor="#E6FFFFFF"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/tvTemp"
-                        app:layout_constraintTop_toBottomOf="@id/tvTemp"
-                        android:layout_marginTop="2dp"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvTemp" />
 
                     <TextView
                         android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="Montreal, Canada"
                         android:textColor="@android:color/white"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@id/tvTemp"
-                        app:layout_constraintTop_toBottomOf="@id/tvHiLo"
-                        android:layout_marginTop="4dp"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvHiLo" />
 
                     <ImageView
                         android:id="@+id/ivCloud"
                         android:layout_width="92dp"
                         android:layout_height="92dp"
                         android:src="@drawable/ic_cloud_rain"
-                        app:tint="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:tint="@null" />
 
                     <TextView
                         android:id="@+id/tvWeatherDesc"
@@ -137,7 +117,7 @@
                         android:textColor="#E6FFFFFF"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -151,8 +131,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginEnd="6dp"
                     app:cardCornerRadius="15dp"
                     app:cardBackgroundColor="#E9EEF7">
@@ -161,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -201,8 +182,8 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginStart="6dp"
                     app:cardCornerRadius="15dp"
                     app:cardBackgroundColor="#E9EEF7">
@@ -211,7 +192,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -242,7 +224,7 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- 진행/상태 카드 (알람 카드 포맷을 재사용) -->
+            <!-- 진행/상태 카드 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -282,8 +264,7 @@
                             app:showAnimationBehavior="inward"
                             app:trackCornerRadius="6dp"
                             app:indicatorColor="#5B4CF6"
-                            app:trackColor="#E5E7EB"
-                            app:progress="50"/>
+                            app:trackColor="#E5E7EB" />
                     </LinearLayout>
 
                     <TextView
@@ -307,7 +288,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 모드 영역: 좌측 현재 모드 + 우측 토글들 (알람 카드 포맷 유지) -->
+            <!-- 모드 영역 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -315,7 +296,7 @@
                 android:layout_marginTop="12dp"
                 android:weightSum="2">
 
-                <!-- 현재 모드 표시 카드 -->
+                <!-- 현재 모드 -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -325,31 +306,32 @@
                     app:cardBackgroundColor="#E9EEF7">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="181dp"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 --><!-- 최소 높이 지정 -->
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="현재 모드 :"
                             android:textColor="#7A7F8A"
-                            android:textSize="13sp"/>
+                            android:textSize="13sp" />
 
                         <TextView
                             android:id="@+id/tvCurrentMode"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
                             android:text="자동"
-                            android:textStyle="bold"
-                            android:textSize="26sp"
                             android:textColor="#111827"
-                            android:layout_marginTop="6dp"/>
+                            android:textSize="26sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- 토글 카드 (알람 카드의 스위치 포맷 사용) -->
+                <!-- 토글 카드 -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -362,9 +344,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="12dp"
+                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
 
-                        <!-- 각 줄은: 라벨 + CheckBox(스위치 모양) -->
+                        <!-- 자동 모드 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -389,6 +372,7 @@
                                 android:padding="0dp"/>
                         </LinearLayout>
 
+                        <!-- 미세먼지 모드 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -413,6 +397,7 @@
                                 android:padding="0dp"/>
                         </LinearLayout>
 
+                        <!-- 우천 모드 -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -449,11 +434,10 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="bottom"
-        app:labelVisibilityMode="labeled"
-        app:itemIconTint="@color/selector_bottom_nav"
-        app:itemTextColor="@color/selector_bottom_nav"
-        app:menu="@menu/menu_bottom_nav"
         android:background="@android:color/white"
-        app:itemRippleColor="@android:color/transparent"/>
-
+        app:labelVisibilityMode="labeled"
+        app:itemIconTint="@color/bottom_nav_color_selector"
+        app:itemTextColor="@color/bottom_nav_color_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:menu="@menu/menu_bottom_nav"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

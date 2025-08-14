@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/ic_round_warning_amber_24" />
+                android:src="@drawable/ic_round_warning" />
 
             <TextView
                 android:id="@+id/tvTitle"

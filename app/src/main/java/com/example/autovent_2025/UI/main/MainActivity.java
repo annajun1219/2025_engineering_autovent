@@ -1,64 +1,76 @@
 package com.example.autovent_2025.UI.main;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.autovent_2025.R;
+import com.example.autovent_2025.UI.alarm.AlarmActivity;
+import com.example.autovent_2025.UI.window.WindowActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SharedPreferences prefs;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // XML 붙이기
         setContentView(R.layout.activity_main);
 
-        prefs = getSharedPreferences("modes", MODE_PRIVATE);
-
+        // --- 하단바 설정 ---
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setSelectedItemId(R.id.nav_home);
-        bottomNav.setOnItemSelectedListener(item -> true);
+        if (bottomNav != null) {
+            // 현재 탭 하이라이트
+            bottomNav.setSelectedItemId(R.id.nav_home);
 
-        TextView tvTemp = findViewById(R.id.tvTemp);
-        TextView tvHiLo = findViewById(R.id.tvHiLo);
-        TextView tvLocation = findViewById(R.id.tvLocation);
-        TextView tvWeatherDesc = findViewById(R.id.tvWeatherDesc);
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_home) {
+                    return true; // 현재 화면
+                } else if (id == R.id.nav_alarm) {
+                    Intent i = new Intent(this, AlarmActivity.class);
+                    // 기존 액티비티 앞으로 가져와서 스택 중복 방지
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    return true;
+                } else if (id == R.id.nav_window) {
+                    Intent i = new Intent(this, WindowActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+                return false;
+            });
+        }
 
-        CheckBox swAuto = findViewById(R.id.swAuto);
-        CheckBox swDust = findViewById(R.id.swDust);
-        CheckBox swRain = findViewById(R.id.swRain);
-        TextView tvCurrentMode = findViewById(R.id.tvCurrentMode);
+        // --- 진행도(LinearProgressIndicator) XML에서 progress 사용 불가 → 코드로 설정 ---
+        LinearProgressIndicator progress = findViewById(R.id.progress);
+        TextView tvPct = findViewById(R.id.tvProgressPct);
+        if (progress != null) {
+            progress.setIndeterminate(false);
+            int pct = 50; // 예시 값. 실데이터에 맞춰 갱신하면 됨.
+            // setProgressCompat이 있으면 애니메이션 가능
+            try {
+                progress.setProgressCompat(pct, true);
+            } catch (Throwable t) {
+                progress.setProgress(pct);
+            }
+            if (tvPct != null) {
+                tvPct.setText(pct + "%");
+            }
+        }
+    }
 
-        // 샘플 텍스트
-        tvTemp.setText("19°");
-        tvHiLo.setText("H:24°  L:18°");
-        tvLocation.setText("Montreal, Canada");
-        tvWeatherDesc.setText("Mid Rain");
-
-        // 토글 저장/복원
-        swAuto.setChecked(prefs.getBoolean("auto", true));
-        swDust.setChecked(prefs.getBoolean("dust", false));
-        swRain.setChecked(prefs.getBoolean("rain", false));
-        tvCurrentMode.setText(swAuto.isChecked() ? "자동" : "수동");
-
-        CompoundButton.OnCheckedChangeListener save = (btn, checked) -> {
-            prefs.edit()
-                    .putBoolean("auto", swAuto.isChecked())
-                    .putBoolean("dust", swDust.isChecked())
-                    .putBoolean("rain", swRain.isChecked())
-                    .apply();
-            tvCurrentMode.setText(swAuto.isChecked() ? "자동" : "수동");
-        };
-        swAuto.setOnCheckedChangeListener(save);
-        swDust.setOnCheckedChangeListener(save);
-        swRain.setOnCheckedChangeListener(save);
-
-        // ▶ Retrofit 사용 시 여기서 fetchWeatherAndAir("Seoul,KR") 같은 함수 호출
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 다른 탭에서 돌아왔을 때도 하단바 선택 상태 유지
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setSelectedItemId(R.id.nav_home);
     }
 }

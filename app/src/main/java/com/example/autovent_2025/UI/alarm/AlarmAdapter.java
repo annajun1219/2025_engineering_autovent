@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;      // ✅ 변경
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,7 +52,7 @@ public class AlarmAdapter extends ListAdapter<Alarm, AlarmAdapter.VH> {
         h.tvTime.setText(a.timeText());
         h.tvSub.setText(a.subText());
 
-        // ✅ CheckBox는 checked 상태 사용
+        // CheckBox는 checked 상태 사용
         h.swEnable.setOnCheckedChangeListener(null); // 리스너 중복 방지
         h.swEnable.setChecked(a.enabled);
 
@@ -89,6 +89,7 @@ public class AlarmAdapter extends ListAdapter<Alarm, AlarmAdapter.VH> {
         public boolean areContentsTheSame(@NonNull Alarm o, @NonNull Alarm n) {
             return o.enabled == n.enabled
                     && TextUtils.equals(o.label, n.label)
+                    && java.util.Objects.equals(o.time, n.time)
                     && o.openMinutes == n.openMinutes
                     && TextUtils.equals(o.repeatText, n.repeatText);
         }
@@ -97,7 +98,7 @@ public class AlarmAdapter extends ListAdapter<Alarm, AlarmAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder {
         public final TextView tvLabel, tvTime, tvSub;
         public final ImageButton btnSettings;
-        public final CheckBox swEnable;            // ✅ 변경
+        public final CheckBox swEnable;
         public final ImageView ivAlarm;
 
         public VH(@NonNull View itemView) {

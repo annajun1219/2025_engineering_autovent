@@ -40,7 +40,8 @@
             android:theme="@style/Theme.Autovent">
         </activity>
 
-
+        <activity android:name=".UI.alarm.AlarmEditActivity" android:exported="false"/>
+        <activity android:name=".UI.alarm.AlarmAddActivity"  android:exported="false"/>
 
         <!-- 알람 화면 -->
         <activity
