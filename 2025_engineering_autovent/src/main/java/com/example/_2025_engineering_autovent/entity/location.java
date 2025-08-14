@@ -1,14 +1,22 @@
 package com.example._2025_engineering_autovent.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "location")
 public class location {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_Location")
     private int idLocation;
-    // getters/setters
+
+    // getter/setter
+    public int getIdLocation() {
+        return idLocation;
+    }
+
+    public void setIdLocation(int idLocation) {
+        this.idLocation = idLocation;
+    }
 }

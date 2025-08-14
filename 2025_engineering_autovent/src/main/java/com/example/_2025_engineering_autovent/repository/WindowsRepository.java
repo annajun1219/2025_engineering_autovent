@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface WindowsRepository extends JpaRepository<windows, Integer> {
+    // 또는 location_id까지 조건으로
     Optional<windows> findByIdWindows(int idWindows);
+    Optional<windows> findFirstByUserEmail(String email);
+    Optional<windows> findByUserEmailAndLocationIdLocation(String email, int idLocation);
 }
