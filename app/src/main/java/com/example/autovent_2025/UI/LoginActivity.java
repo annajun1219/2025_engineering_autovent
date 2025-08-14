@@ -13,6 +13,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         findViewById(R.id.btnLogin).setOnClickListener(v -> {
             // 로그인 처리 로직
             // 예시: 로그인 성공 시 MainActivity로 이동
