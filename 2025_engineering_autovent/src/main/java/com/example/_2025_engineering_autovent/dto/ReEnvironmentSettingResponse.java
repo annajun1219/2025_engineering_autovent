@@ -2,16 +2,16 @@ package com.example._2025_engineering_autovent.dto;
 
 import java.util.List;
 
-public class EnvironmentSettingResponse {
+public class ReEnvironmentSettingResponse {
     private int status;
     private boolean success;
     private String message;
     private List<Data> data; // 응답 데이터 목록
 
     // 기본 생성자
-    public EnvironmentSettingResponse() {}
+    public ReEnvironmentSettingResponse() {}
 
-    public EnvironmentSettingResponse(int status, boolean success, String message, List<Data> data) {
+    public ReEnvironmentSettingResponse(int status, boolean success, String message, List<Data> data) {
         this.status = status;
         this.success = success;
         this.message = message;
@@ -75,7 +75,7 @@ public class EnvironmentSettingResponse {
         public String getWindow_id() {
             return window_id;
         }
-        public void setWindow_id(String window_id) {
+        public void setWindow_id(String  window_id) {
             this.window_id = window_id;
         }
 

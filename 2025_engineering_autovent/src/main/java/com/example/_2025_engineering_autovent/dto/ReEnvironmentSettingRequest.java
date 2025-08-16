@@ -1,7 +1,7 @@
 package com.example._2025_engineering_autovent.dto;
 
 // EnvironmentSettingRequest.java
-public class EnvironmentSettingRequest {
+public class ReEnvironmentSettingRequest {
     private int location_id;
     private String window_id;
     private String mode;
@@ -9,7 +9,7 @@ public class EnvironmentSettingRequest {
     private int period;
 
     //기본 생성자, getter, setter
-    public EnvironmentSettingRequest(){}
+    public ReEnvironmentSettingRequest(){}
 
     public int getLocation_id(){
         return location_id;

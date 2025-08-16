@@ -8,25 +8,26 @@ public class windows {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_Windows")
-    private int idWindows;
+    @Column(name = "window_id")
+    private String idWindows;
 
     @ManyToOne
     @JoinColumn(name = "email", referencedColumnName = "email")
-    private users user; // FK - users.email
+    private users user; // users 엔티티
 
     @ManyToOne
-    @JoinColumn(name = "id_Location", referencedColumnName = "id_Location")
-    private location location; // FK - location.id_Location
+    @JoinColumn(name = "location_id", referencedColumnName = "location_id")
+    private location location; // location 엔티티
 
-    public windows() {} // 기본 생성자
+    // 기본 생성자
+    public windows() {}
 
-    // ===== Getter / Setter =====
-    public int getIdWindows() {
+    // Getter/Setter
+    public String getIdWindows() {
         return idWindows;
     }
 
-    public void setIdWindows(int idWindows) {
+    public void setIdWindows(String idWindows) {
         this.idWindows = idWindows;
     }
 

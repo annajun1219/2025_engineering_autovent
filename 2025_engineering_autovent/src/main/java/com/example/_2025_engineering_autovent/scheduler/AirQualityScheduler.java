@@ -72,7 +72,7 @@ public class AirQualityScheduler {
     private void sendDustModeRequest() {
         DustRequest dustRequest = new DustRequest();
         dustRequest.setLocation_id(1); // 실제 location_id
-        dustRequest.setWindow_id(1);   // 실제 window_id
+        dustRequest.setWindow_id("1");   // 실제 window_id
         dustRequest.setMode("dust");   // 미세먼지 모드
         dustRequest.setTime_stamp(LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));

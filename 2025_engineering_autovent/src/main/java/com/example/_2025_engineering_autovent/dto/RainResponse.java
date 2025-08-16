@@ -4,15 +4,15 @@ import com.example._2025_engineering_autovent.controller.DustController;
 
 import java.util.List;
 
-public class DustResponse {
+public class RainResponse {
     private int status;
     private boolean success;
     private String message;
-    private List<DustResponse.Data> data; // 응답 데이터 목록
+    private List<RainResponse.Data> data; // 응답 데이터 목록
 
-    public DustResponse() {}
+    public RainResponse() {}
 
-    public DustResponse(int status, boolean success, String message, List<DustResponse.Data> data) {
+    public RainResponse(int status, boolean success, String message, List<RainResponse.Data> data) {
         this.status = status;
         this.success = success;
         this.message = message;
@@ -24,8 +24,8 @@ public class DustResponse {
     public void setSuccess(boolean success) {this.success = success;}
     public String getMessage() {return message;}
     public void setMessage(String message) {this.message = message;}
-    public List<DustResponse.Data> getData() {return data;}
-    public void setData(List<DustResponse.Data> data) {this.data = data;}
+    public List<RainResponse.Data> getData() {return data;}
+    public void setData(List<RainResponse.Data> data) {this.data = data;}
 
 
 
