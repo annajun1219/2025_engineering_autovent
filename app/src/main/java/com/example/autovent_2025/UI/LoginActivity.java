@@ -20,6 +20,9 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // 연동안 해도 로그인 통과시키는 테스트 스위치 (실연동 시 false)
+    private static final boolean OFFLINE_LOGIN = true;
+
     private EditText etEmail, etPw;
     private Button btnLogin;
 
@@ -39,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = safeText(etEmail);
         String password = safeText(etPw);
 
-        // 1) 입력값 검증
+        // 입력값 검증
         if (email.isEmpty()) {
             etEmail.setError("이메일을 입력하세요");
             etEmail.requestFocus();
@@ -56,17 +59,22 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // 2) 로딩 상태
-        setLoading(true);
+        // 오프라인 모드: 즉시 성공 처리
+        if (OFFLINE_LOGIN) {
+            Toast.makeText(this, "오프라인 로그인(테스트)", Toast.LENGTH_SHORT).show();
+            goMain();
+            return;
+        }
 
-        // 3) 로그인 API 호출 (백엔드 JSON 키: email, passwords)
+        // ===== 실제 연동 모드 =====
+        setLoading(true);
         RetrofitHelper.login(email, password, new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> resp) {
                 setLoading(false);
 
                 if (!resp.isSuccessful()) {
-                    // HTTP 오류 (ex. 400/401/404/500)
+                    // 예: 400/401/404/500
                     if (resp.code() == 401) {
                         Toast.makeText(LoginActivity.this, "이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -83,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (body.isSuccess()) {
                     Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                    // TODO: 토큰/유저정보 저장 필요 시 여기서 처리
+                    // TODO: 토큰/유저정보 저장 필요 시 처리
                     goMain();
                 } else {
                     String msg = body.getMessage() != null ? body.getMessage() : "로그인에 실패했습니다.";
