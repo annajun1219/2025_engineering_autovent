@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#F8F9FE"
-            app:title="주간 에너지 리포트"
+            app:title="Weekly Energy Report"
             app:titleCentered="true"
             app:titleTextColor="#1C1E21"
             app:navigationIcon="@drawable/ic_back"
@@ -70,6 +70,7 @@
                             android:textStyle="bold"
                             android:textSize="16sp"/>
 
+
                         <TextView
                             android:id="@+id/tvWeeklyKwhSaved"
                             android:layout_width="wrap_content"
@@ -86,13 +87,11 @@
                     </LinearLayout>
 
                     <!-- 미니 라인 차트 자리 (요일별 총 사용량/절감량) -->
-                    <ImageView
-                        android:id="@+id/ivWeeklyMiniChart"
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/weeklyLineChart"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/bg_chart_placeholder"
-                        android:contentDescription="@string/unknown"/>
+                        android:layout_marginTop="10dp"/>
 
                     <!-- 범례/메트릭 3열 -->
                     <LinearLayout
@@ -179,6 +178,12 @@
                         android:layout_marginTop="8dp"
                         android:background="@drawable/bg_gauge_placeholder">
 
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pmGauge"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="8dp"/>
+
                         <TextView
                             android:id="@+id/tvPmImprovementPct"
                             android:layout_width="wrap_content"
@@ -187,7 +192,8 @@
                             android:textStyle="bold"
                             android:textSize="20sp"
                             android:textColor="#1C1E21"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:layout_marginTop="35dp"/>
                     </FrameLayout>
 
                     <!-- 수치 요약 -->
@@ -362,12 +368,11 @@
                         android:layout_height="wrap_content"/>
 
                     <!-- 바 차트 자리: 일자별 환기 시간 -->
-                    <ImageView
-                        android:id="@+id/ivVentBarChart"
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/ventBarChart"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_chart_placeholder"/>
+                        android:layout_marginTop="8dp"/>
 
                     <!-- 통계 -->
                     <LinearLayout
