@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="16dp"
-                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
+                        android:minHeight="170dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -193,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="16dp"
-                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
+                        android:minHeight="170dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -306,11 +306,11 @@
                     app:cardBackgroundColor="#E9EEF7">
 
                     <LinearLayout
-                        android:layout_width="181dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="16dp"
-                        android:minHeight="170dp">   <!-- 최소 높이 지정 --><!-- 최소 높이 지정 -->
+                        android:minHeight="170dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -345,7 +345,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="12dp"
-                        android:minHeight="170dp">   <!-- 최소 높이 지정 -->
+                        android:minHeight="170dp">
 
                         <!-- 자동 모드 -->
                         <LinearLayout
@@ -369,7 +369,10 @@
                                 android:button="@null"
                                 android:background="@drawable/switch_selector"
                                 android:backgroundTint="@null"
-                                android:padding="0dp"/>
+                                android:padding="0dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:duplicateParentState="false" />
                         </LinearLayout>
 
                         <!-- 미세먼지 모드 -->
@@ -394,7 +397,10 @@
                                 android:button="@null"
                                 android:background="@drawable/switch_selector"
                                 android:backgroundTint="@null"
-                                android:padding="0dp"/>
+                                android:padding="0dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:duplicateParentState="false" />
                         </LinearLayout>
 
                         <!-- 우천 모드 -->
@@ -419,12 +425,14 @@
                                 android:button="@null"
                                 android:background="@drawable/switch_selector"
                                 android:backgroundTint="@null"
-                                android:padding="0dp"/>
+                                android:padding="0dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:duplicateParentState="false" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

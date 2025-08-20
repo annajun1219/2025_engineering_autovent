@@ -84,6 +84,7 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+
         rv = findViewById(R.id.rvAlarms);
 
         adapter = new AlarmAdapter(this, new AlarmAdapter.AlarmListener() {
