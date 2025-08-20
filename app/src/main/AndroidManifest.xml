@@ -51,5 +51,9 @@
             android:theme="@style/Theme.Autovent">
         </activity>
 
+        <activity android:name=".UI.Energy.EnergyActivity"
+            android:exported="false"/>
+
+
     </application>
 </manifest>

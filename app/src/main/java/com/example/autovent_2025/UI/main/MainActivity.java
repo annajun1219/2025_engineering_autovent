@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.autovent_2025.R;
 import com.example.autovent_2025.UI.alarm.AlarmActivity;
 import com.example.autovent_2025.UI.window.WindowActivity;
+import com.example.autovent_2025.UI.Energy.EnergyActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
@@ -93,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             });
         }
+
+        // ----- 에너지 리포트 카드 클릭 이벤트 -----
+        findViewById(R.id.cardEnergyShortcut).setOnClickListener(v -> {
+            Intent intent = new Intent(this, EnergyActivity.class);
+            startActivity(intent);
+        });
 
         // ----- 진행도 표시 -----
         LinearProgressIndicator progress = findViewById(R.id.progress);

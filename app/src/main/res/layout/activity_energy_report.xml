@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     android:background="#F8F9FE">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#F8F9FE"
-        app:title="에너지 리포트"
-        app:titleCentered="true"/>
+        android:background="@android:color/transparent"
+        android:elevation="0dp">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#F8F9FE"
+            app:title="주간 에너지 리포트"
+            app:titleCentered="true"
+            app:titleTextColor="#1C1E21"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationIconTint="#1C1E21"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,173 +37,406 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:divider="?android:attr/dividerHorizontal"
-            android:showDividers="middle">
+            android:clipToPadding="false">
 
-            <!-- [1] 요약 지표 -->
+            <!-- Top summary -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
+                android:backgroundTint="@android:color/transparent"
+                app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#E5E8F0">
+                app:strokeWidth="0dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_primary"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/tvSummaryTitle"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="주간 요약"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvSummaryEnergy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="총 절감: 0.00 kWh / 0원 / 0.0 kgCO₂e"/>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="이번 주 요약"
+                            android:textColor="#1C1E21"
+                            android:textStyle="bold"
+                            android:textSize="16sp"/>
 
-                    <TextView
-                        android:id="@+id/tvSunUsage"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tvWeeklyKwhSaved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_pill_dark"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="절감 0.00 kWh"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <!-- 미니 라인 차트 자리 (요일별 총 사용량/절감량) -->
+                    <ImageView
+                        android:id="@+id/ivWeeklyMiniChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_chart_placeholder"
+                        android:contentDescription="@string/unknown"/>
+
+                    <!-- 범례/메트릭 3열 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="자연광 활용률: 0%"/>
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvKwhSavedValue"
+                                android:text="0.00 kWh" android:textStyle="bold"
+                                android:textSize="18sp" android:textColor="#1C1E21"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="총 전력 절감"
+                                android:textSize="12sp" android:textColor="#4F5B62"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvCo2SavedValue"
+                                android:text="0.0 kgCO₂e" android:textStyle="bold"
+                                android:textSize="18sp" android:textColor="#1C1E21"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="탄소 절감"
+                                android:textSize="12sp" android:textColor="#4F5B62"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:id="@+id/tvCostSavedValue"
+                                android:text="0원" android:textStyle="bold"
+                                android:textSize="18sp" android:textColor="#1C1E21"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                            <TextView android:text="요금 절감"
+                                android:textSize="12sp" android:textColor="#4F5B62"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- [2] 조명 -->
+            <!-- 1) 미세먼지 차단 효과 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#E5E8F0">
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="#FFFFFF"
+                app:strokeColor="#E6EAEE"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="조명 절감"
+                        android:text="미세먼지 차단 효과"
                         android:textStyle="bold"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="#1C1E21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- 반원 게이지 자리: 실내 공기질 개선율 -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_gauge_placeholder">
+
+                        <TextView
+                            android:id="@+id/tvPmImprovementPct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="개선 0%"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:textColor="#1C1E21"
+                            android:layout_gravity="center"/>
+                    </FrameLayout>
+
+                    <!-- 수치 요약 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginTop="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="실내 PM2.5 평균"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView
+                                android:id="@+id/tvPmIndoorAvg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 ㎍/㎥" android:textStyle="bold"
+                                android:textSize="16sp" android:textColor="#1C1E21"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="실외(창문 열었을 때) 가정 평균"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView android:id="@+id/tvPmOutdoorRef"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 ㎍/㎥" android:textStyle="bold"
+                                android:textSize="16sp" android:textColor="#1C1E21"/>
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvLightingAutoOff"
+                        android:id="@+id/tvPmAvoidedDose"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="자동 소등: 0분 → 0.00 kWh 절감"/>
-
-                    <TextView
-                        android:id="@+id/tvLightingWaste"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="빈 교실 점등: 0분 → 잠재 절감 0.00 kWh"/>
+                        android:text="창문 자동닫힘으로 오염 노출 ↓ 0%"
+                        android:textColor="#4F5B62"
+                        android:textSize="13sp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- [3] 공기질/환기 -->
+            <!-- 2) 자연광 기반 조명 절감 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#E5E8F0">
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="#FFFFFF"
+                app:strokeColor="#E6EAEE"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="공기질 / 환기"
+                        android:text="자연광 기반 조명 절감"
                         android:textStyle="bold"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:textColor="#1C1E21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
+                    <!-- 밝기 트리거 요약 -->
                     <TextView
-                        android:id="@+id/tvPM25"
+                        android:id="@+id/tvSunlightRule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="PM2.5 평균 0 ㎍/㎥ (좋음), 최대 0 ㎍/㎥"/>
+                        android:text="조도 임계치 초과 시 형광등 자동 OFF"
+                        android:textColor="#4F5B62"
+                        android:textSize="13sp"/>
+
+                    <!-- OFF 시간/절감량 2열 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_marginTop="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:text="형광등 OFF 누적"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView android:id="@+id/tvLightOffMinutes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0분" android:textStyle="bold"
+                                android:textSize="16sp" android:textColor="#1C1E21"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:text="전력 절감"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView android:id="@+id/tvLightSavedKwh"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00 kWh" android:textStyle="bold"
+                                android:textSize="16sp" android:textColor="#1C1E21"/>
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvVentStrategy"
+                        android:id="@+id/tvLightSavedEtc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="전략: 실외 낮음 → 창문 환기, 실외 높음 → 청정기 가동"/>
-
-                    <TextView
-                        android:id="@+id/tvPurifier"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="청정기: 0분 / 0.00 kWh"/>
-
-                    <TextView
-                        android:id="@+id/tvWindowOpen"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="창문 개방: 0분"/>
+                        android:text="요금 0원 · CO₂ 0.0 kg 절감"
+                        android:textColor="#4F5B62"
+                        android:textSize="13sp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- [4] 쾌적/점유 -->
+            <!-- 3) 주간 환기 기록 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#E5E8F0">
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="#FFFFFF"
+                app:strokeColor="#E6EAEE"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="쾌적 / 점유"
+                        android:text="주간 환기 기록"
                         android:textStyle="bold"
-                        android:textSize="16sp"/>
-
-                    <TextView
-                        android:id="@+id/tvCO2"
+                        android:textSize="16sp"
+                        android:textColor="#1C1E21"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="CO₂ 평균 0 ppm / 최대 0 ppm"/>
+                        android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:id="@+id/tvOccupancyWaste"
-                        android:layout_width="wrap_content"
+                    <!-- 바 차트 자리: 일자별 환기 시간 -->
+                    <ImageView
+                        android:id="@+id/ivVentBarChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_chart_placeholder"/>
+
+                    <!-- 통계 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="불필요 점등 0분 / 불필요 청정기 0분 (잠재절감 0.00 kWh)"/>
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:layout_marginTop="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView
+                                android:text="총 환기 시간"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView android:id="@+id/tvVentTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0시간 0분" android:textStyle="bold"
+                                android:textSize="16sp" android:textColor="#1C1E21"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:text="평균 1회 환기"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView
+                                android:id="@+id/tvVentAvg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0분"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="#1C1E21"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                            <TextView android:text="자동 트리거 횟수"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="#4F5B62"/>
+                            <TextView
+                                android:id="@+id/tvVentAutoCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0회" android:textStyle="bold"
+                                android:textSize="16sp" android:textColor="#1C1E21"/>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <Space android:layout_width="match_parent" android:layout_height="28dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
