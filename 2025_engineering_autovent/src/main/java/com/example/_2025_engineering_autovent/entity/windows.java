@@ -11,6 +11,7 @@ public class windows {
     @Column(name = "window_id")
     private String idWindows;
 
+
     @ManyToOne
     @JoinColumn(name = "email", referencedColumnName = "email")
     private users user; // users 엔티티

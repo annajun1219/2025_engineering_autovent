@@ -11,5 +11,12 @@ public class users {
     private String email;
     private String passwords;
 
+    public String getEmail(){
+        return email;
+    }
+    public void setEmail(String email){
+        this.email = email;
+    }
+
     // 기본 생성자, Getter, Setter
 }
