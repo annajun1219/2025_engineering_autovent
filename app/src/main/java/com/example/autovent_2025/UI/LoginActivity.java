@@ -1,6 +1,7 @@
 package com.example.autovent_2025.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -22,6 +23,10 @@ public class LoginActivity extends AppCompatActivity {
 
     // 연동안 해도 로그인 통과시키는 테스트 스위치 (실연동 시 false)
     private static final boolean OFFLINE_LOGIN = true;
+
+    // 이메일 저장용 키
+    private static final String PREFS = "user_prefs";
+    private static final String KEY_EMAIL = "user_email";
 
     private EditText etEmail, etPw;
     private Button btnLogin;
@@ -59,8 +64,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // 오프라인 모드: 즉시 성공 처리
+        // 오프라인 모드: 즉시 성공 처리 + 이메일 저장
         if (OFFLINE_LOGIN) {
+            saveEmail(email);
             Toast.makeText(this, "오프라인 로그인(테스트)", Toast.LENGTH_SHORT).show();
             goMain();
             return;
@@ -74,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                 setLoading(false);
 
                 if (!resp.isSuccessful()) {
-                    // 예: 400/401/404/500
                     if (resp.code() == 401) {
                         Toast.makeText(LoginActivity.this, "이메일 또는 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -90,8 +95,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if (body.isSuccess()) {
+                    // 이메일 저장 (응답에 이메일이 있으면 그걸 쓰고, 없으면 입력값 사용)
+                    // 예: saveEmail(body.getUsername() != null ? body.getUsername() : email);
+                    saveEmail(email);
+
+                    // (선택) 토큰 등 추가 저장
+                    // saveToken(body.getAccessToken());
+
                     Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                    // TODO: 토큰/유저정보 저장 필요 시 처리
                     goMain();
                 } else {
                     String msg = body.getMessage() != null ? body.getMessage() : "로그인에 실패했습니다.";
@@ -105,6 +116,11 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "네트워크 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveEmail(String email) {
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        prefs.edit().putString(KEY_EMAIL, email).apply();
     }
 
     private String safeText(EditText et) {

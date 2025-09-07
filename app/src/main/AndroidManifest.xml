@@ -10,17 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".MyApp"
         android:theme="@style/Theme.Autovent"
         tools:targetApi="31"
         tools:ignore="MissingClass">
-        <service
-            android:name=".notify.AppMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
         <!-- 로그인 화면: 앱 시작 액티비티 -->
         <activity
             android:name=".UI.LoginActivity"

@@ -6,14 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.autovent_2025.Model.WindowItem;
 import com.example.autovent_2025.R;
+
 import java.util.List;
 
 public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.VH> {
+
     public interface OnToggleChanged {
         void onToggle(int position, boolean isOpen, WindowItem item);
     }
@@ -29,9 +32,15 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.VH> {
         setHasStableIds(true);
     }
 
-    @Override public long getItemId(int position) { return list.get(position).getTitle().hashCode(); }
+    @Override
+    public long getItemId(int position) {
+        WindowItem it = list.get(position);
+        // 건물 + 제목 조합으로 보다 안정적인 ID 생성
+        return (it.getBuilding() + "|" + it.getTitle()).hashCode();
+    }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = inflater.inflate(R.layout.item_window, parent, false);
         return new VH(v);
@@ -43,25 +52,35 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.VH> {
         h.tvBadge.setText(item.getBuilding());
         h.tvTitle.setText(item.getTitle());
 
-        // 리스너 중복 방지
+        // 리스너 중복 방지 후 상태 바인딩
         h.swOpen.setOnCheckedChangeListener(null);
         h.swOpen.setChecked(item.isOpen());
         h.tvState.setText(item.isOpen() ? "열림" : "닫힘");
 
         h.swOpen.setOnCheckedChangeListener((btn, checked) -> {
-            item.setOpen(checked);
+            // 바인딩/애니메이션 타이밍 안전 처리
+            int adapterPos = h.getAdapterPosition();
+            if (adapterPos == RecyclerView.NO_POSITION) return;
+
+            WindowItem cur = list.get(adapterPos);
+            cur.setOpen(checked);
             h.tvState.setText(checked ? "열림" : "닫힘");
+
             if (toggleListener != null) {
-                toggleListener.onToggle(h.getAdapterPosition(), checked, item);
+                toggleListener.onToggle(adapterPos, checked, cur);
             }
         });
     }
 
-    @Override public int getItemCount() { return list.size(); }
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
 
     static class VH extends RecyclerView.ViewHolder {
         TextView tvBadge, tvTitle, tvState;
         CheckBox swOpen;
+
         VH(@NonNull View v) {
             super(v);
             tvBadge = v.findViewById(R.id.tvBadge);

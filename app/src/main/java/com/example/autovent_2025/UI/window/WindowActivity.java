@@ -6,12 +6,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.autovent_2025.Model.BuildingResponse;
 import com.example.autovent_2025.Model.WindowItem;
+import com.example.autovent_2025.Network.RetrofitHelper;
 import com.example.autovent_2025.R;
 import com.example.autovent_2025.UI.alarm.AlarmActivity;
 import com.example.autovent_2025.UI.main.MainActivity;
@@ -21,7 +24,13 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WindowActivity extends AppCompatActivity {
 
@@ -77,10 +86,8 @@ public class WindowActivity extends AppCompatActivity {
         }
         // ==================================
 
-        loadDummy(); // 나중에 Retrofit으로 교체
 
         adapter = new WindowAdapter(this, viewList, (pos, isOpen, item) -> {
-            // TODO: 백엔드 연동 시 개별 창문 상태 업데이트 API 호출
         });
         rvWindows.setLayoutManager(new LinearLayoutManager(this));
         rvWindows.setAdapter(adapter);
@@ -110,7 +117,12 @@ public class WindowActivity extends AppCompatActivity {
             applyFilter();
         });
 
-        applyFilter();
+        String email = getSharedPreferences("user_prefs", MODE_PRIVATE).getString("user_email", null);
+        if (email != null) {
+            fetchWindows(email);
+        } else {
+            Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -121,14 +133,76 @@ public class WindowActivity extends AppCompatActivity {
         if (bottomNav != null) bottomNav.setSelectedItemId(R.id.nav_window);
     }
 
+    private void fetchWindows(String email) {
+        RetrofitHelper.fetchUserWindows(email, new Callback<BuildingResponse>() {
+            @Override public void onResponse(Call<BuildingResponse> c, Response<BuildingResponse> r) {
+                if (!r.isSuccessful() || r.body()==null || !r.body().isSuccess() || r.body().getData()==null) {
+                    useDummy(); return;
+                }
+                all.clear();
+                all.addAll(mapToWindowItems(r.body()));
+                buildBuildingChips(all);
+                applyFilter();
+            }
+            @Override public void onFailure(Call<BuildingResponse> c, Throwable t) {
+                useDummy();
+            }
+        });
+    }
+
+    private List<WindowItem> mapToWindowItems(BuildingResponse resp) {
+        List<WindowItem> out = new ArrayList<>();
+        for (BuildingResponse.Data d : resp.getData()) {
+            String title = safe(d.getFloor()) + "층 " + safe(d.getRoomNum()) + "호";
+            boolean open = "on".equalsIgnoreCase(d.getOnOff());
+            out.add(new WindowItem(safe(d.getLocation()), title, open));
+        }
+        return out;
+    }
+
+    private String safe(String s) { return s == null ? "" : s; }
+
+    private void buildBuildingChips(List<WindowItem> items) {
+        chipGroup.setOnCheckedChangeListener(null);
+        chipGroup.removeAllViews();
+
+        Set<String> buildings = new HashSet<>();
+        for (WindowItem w : items) buildings.add(w.getBuilding());
+
+        for (String b : buildings) {
+            Chip c = new Chip(this);
+            c.setText(b);
+            c.setClickable(true);
+            c.setCheckable(true);
+            chipGroup.addView(c);
+        }
+
+        chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == -1) {
+                selectedBuilding = "";
+            } else {
+                Chip chip = group.findViewById(checkedId);
+                selectedBuilding = chip != null ? chip.getText().toString() : "";
+            }
+            applyFilter();
+        });
+    }
+
+
     private void loadDummy() {
-        all.clear();
         all.add(new WindowItem("중앙도서관", "1층 창문A", true));
         all.add(new WindowItem("중앙도서관", "1층 창문B", false));
         all.add(new WindowItem("과학관", "2층 창문C", true));
         all.add(new WindowItem("프라임관", "3층 창문D", false));
         all.add(new WindowItem("명신관", "1층 창문E", true));
         all.add(new WindowItem("순헌관", "2층 창문F", false));
+    }
+
+    private void useDummy() {
+        all.clear();
+        loadDummy();           // 더미 채우기
+        buildBuildingChips(all);
+        applyFilter();
     }
 
     private void applyFilter() {
