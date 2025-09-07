@@ -151,6 +151,7 @@
                 android:paddingEnd="4dp">
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="모든 창문 개방"
