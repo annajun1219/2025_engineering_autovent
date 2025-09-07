@@ -1,48 +1,53 @@
 package com.example._2025_engineering_autovent.controller;
 
-import com.example._2025_engineering_autovent.dto.ArduinoBatteryRequest;
+import com.example._2025_engineering_autovent.dto.ArduinoRainSensorRequest;
 import com.example._2025_engineering_autovent.entity.location;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/battery")
-public class ArduinoBatteryController {
+import javax.xml.stream.Location;
 
-    private volatile int latestLevel = 0;
+@RestController
+@RequestMapping("/rain/sensor")
+public class ArduinoRainSensorController {
+
     private volatile int latestSensorId = 0;
     private volatile String latestSensorType = "";
     private volatile location latestLocation;
     private volatile String latestWindowId = "";
+    private volatile int latestRainLevel = 0;
+    private volatile String latestTimestamp = "";
 
-    @PostMapping(value = "arduino", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> updateBattery(@RequestBody ArduinoBatteryRequest request) {
+    @PostMapping(value = "/arduino", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> updateRainSensor(@RequestBody ArduinoRainSensorRequest request) {
         latestSensorId = request.getSensor_id();
         latestSensorType = request.getSensor_type();
         latestLocation = request.getLocation();
         latestWindowId = request.getWindow_id();
-        latestLevel = request.getLevel();
+        latestRainLevel = request.getRainlevel();
+        latestTimestamp = request.getTime_stamp();
 
         System.out.println("sensor_id: " + latestSensorId
                 + ", sensor_type: " + latestSensorType
-                + ", location: " + (latestLocation != null ? latestLocation.getLocation() : "null")
-                + ", floor: " + (latestLocation != null ? latestLocation.getFloor() : "null")
+                + ", location: " + latestLocation
                 + ", window_id: " + latestWindowId
-                + ", 배터리 레벨: " + latestLevel + "%");
+                + ", rainLevel: " + latestRainLevel
+                + ", time_stamp: " + latestTimestamp);
 
         return ResponseEntity.ok().body(
-                new ResponseMessage("success", "Battery level updated",
+                new ResponseMessage("success", "Rain sensor data updated",
                         latestSensorId, latestSensorType,
-                        latestLocation, latestWindowId, latestLevel)
+                        latestLocation, latestWindowId,
+                        latestRainLevel, latestTimestamp)
         );
     }
 
-    @GetMapping(produces = "application/json")
-    public ResponseEntity<?> getBatteryLevel() {
+    @GetMapping(value = "/arduino", produces = "application/json")
+    public ResponseEntity<?> getLatestRainSensor() {
         return ResponseEntity.ok().body(
-                new BatteryResponse(
-                        latestSensorId, latestSensorType,
-                        latestLocation, latestWindowId, latestLevel)
+                new RainSensorResponse(latestSensorId, latestSensorType,
+                        latestLocation, latestWindowId,
+                        latestRainLevel, latestTimestamp)
         );
     }
 
@@ -53,19 +58,24 @@ public class ArduinoBatteryController {
         private String sensor_type;
         private location location;
         private String window_id;
-        private int level;
+        private int rainlevel;
+        private String time_stamp;
 
         public ResponseMessage(String status, String message,
                                int sensor_id, String sensor_type,
-                               location location, String window_id, int level) {
+                               location location, String window_id, int rainlevel,
+                               String time_stamp) {
             this.status = status;
             this.message = message;
             this.sensor_id = sensor_id;
             this.sensor_type = sensor_type;
             this.location = location;
             this.window_id = window_id;
-            this.level = level;
+            this.rainlevel = rainlevel;
+            this.time_stamp = time_stamp;
         }
+
+        // getters
 
         public String getStatus() { return status; }
         public String getMessage() { return message; }
@@ -73,29 +83,38 @@ public class ArduinoBatteryController {
         public String getSensor_type() { return sensor_type; }
         public location getLocation() { return location; }
         public String getWindow_id() { return window_id; }
-        public int getLevel() { return level; }
+        public int getRainlevel() { return rainlevel; }
+        public String getTime_stamp() { return time_stamp; }
     }
 
-    static class BatteryResponse {
+    static class RainSensorResponse {
         private int sensor_id;
         private String sensor_type;
         private location location;
         private String window_id;
-        private int level;
+        private int rainlevel;
+        private String time_stamp;
 
-        public BatteryResponse(int sensor_id, String sensor_type,
-                               location location, String window_id, int level) {
+        public RainSensorResponse(int sensor_id, String sensor_type,
+                                  location location,
+                                  String window_id, int rainlevel,
+                                  String time_stamp) {
             this.sensor_id = sensor_id;
             this.sensor_type = sensor_type;
             this.location = location;
             this.window_id = window_id;
-            this.level = level;
+            this.rainlevel = rainlevel;
+            this.time_stamp = time_stamp;
         }
+
+        // getters
 
         public int getSensor_id() { return sensor_id; }
         public String getSensor_type() { return sensor_type; }
         public location getLocation() { return location; }
         public String getWindow_id() { return window_id; }
-        public int getLevel() { return level; }
+        public int getRainlevel() { return rainlevel; }
+        public String getTime_stamp() { return time_stamp; }
     }
 }
+
