@@ -14,7 +14,10 @@ import com.example.autovent_2025.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -44,6 +47,10 @@ public class EnergyActivity extends AppCompatActivity {
     // --- 주간 환기 기록 ---
     private TextView tvVentTotal, tvVentAvg, tvVentAutoCount;
 
+    // --- CO2 섹션 (NEW) ---
+    private TextView tvCo2Avg, tvCo2Max, tvCo2TriggerCount, tvCo2Note; // NEW
+    private LineChart co2LineChart;                                      // NEW
+
     // --- 차트 ---
     private LineChart weeklyLineChart;
     private PieChart pmGauge;
@@ -55,6 +62,9 @@ public class EnergyActivity extends AppCompatActivity {
     private static final double LAMP_POWER_KW = 0.032;     // 32W 형광등 1개 기준
     private static final int    LAMP_COUNT    = 12;        // 교실 램프 개수(샘플)
     private static final double SUN_THRESHOLD_LUX = 400.0; // 조명 OFF 임계치(샘플)
+
+    // CO2 임계치 (자동 환기 트리거 기준) — 필요 시 환경설정/서버에서 내려받기
+    private static final float CO2_THRESHOLD_PPM = 1000f;  // NEW
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,6 +116,13 @@ public class EnergyActivity extends AppCompatActivity {
         weeklyLineChart    = findViewById(R.id.weeklyLineChart);
         pmGauge            = findViewById(R.id.pmGauge);
         ventBarChart       = findViewById(R.id.ventBarChart);
+
+        // CO2 섹션 (NEW)
+        co2LineChart       = findViewById(R.id.co2LineChart);          // NEW
+        tvCo2Avg           = findViewById(R.id.tvCo2Avg);              // NEW
+        tvCo2Max           = findViewById(R.id.tvCo2Max);              // NEW
+        tvCo2TriggerCount  = findViewById(R.id.tvCo2TriggerCount);     // NEW
+        tvCo2Note          = findViewById(R.id.tvCo2Note);             // NEW
     }
 
     /** 샘플 데이터로 화면 그리기 (서버 연동 시 이 부분만 교체) */
@@ -127,11 +144,19 @@ public class EnergyActivity extends AppCompatActivity {
         // 요일별 절감량(라인차트 샘플, kWh)
         float[] dailySaved = {0.12f, 0.18f, 0.09f, 0.25f, 0.16f, 0.22f, 0.15f};
 
+        // CO2 (ppm) — 하루 6포인트 샘플 (NEW)
+        float[] co2Ppm = {650f, 720f, 980f, 1100f, 900f, 780f}; // 1100에서 임계 초과 (NEW)
+
         // ---- (B) 계산 ----
         double pmImproveRatio = calcPmImproveRatio(pmIndoorAvg, pmOutdoorIfOpenAvg); // 0~1
         double savedKwhByLight = calcLightSavedKwh(lightOffMinutes, LAMP_POWER_KW, LAMP_COUNT);
         double savedCost = savedKwhByLight * PRICE_PER_KWH;
         double savedCo2  = savedKwhByLight * CO2_PER_KWH;
+
+        // CO2 통계 (NEW)
+        float co2Avg = avg(co2Ppm);
+        float co2Max = max(co2Ppm);
+        int   co2Triggers = countAbove(co2Ppm, CO2_THRESHOLD_PPM);
 
         // ---- (C) 텍스트 바인딩 ----
         setText(tvWeeklyKwhSaved, String.format(Locale.KOREA, "절감 %.2f kWh", savedKwhByLight));
@@ -155,10 +180,19 @@ public class EnergyActivity extends AppCompatActivity {
         setText(tvVentAvg,   String.format(Locale.KOREA, "%d분", ventEvents == 0 ? 0 : totalVentMinutes / ventEvents));
         setText(tvVentAutoCount, String.format(Locale.KOREA, "%d회", ventEvents));
 
+        // CO2 텍스트 (NEW)
+        setText(tvCo2Avg, String.format(Locale.KOREA, "%.0f ppm", co2Avg));
+        setText(tvCo2Max, String.format(Locale.KOREA, "%.0f ppm", co2Max));
+        setText(tvCo2TriggerCount, String.format(Locale.KOREA, "%d회", co2Triggers));
+        setText(tvCo2Note, co2Triggers > 0
+                ? String.format(Locale.KOREA, "CO₂가 %.0fppm 임계치를 초과해 자동 환기가 작동했습니다.", CO2_THRESHOLD_PPM)
+                : String.format(Locale.KOREA, "이번 주 CO₂는 안정 수준(≤ %.0fppm)으로 유지되었습니다.", CO2_THRESHOLD_PPM));
+
         // ---- (D) 차트 렌더링 ----
         renderWeeklyLineChart(dailySaved);
         renderPmGauge((float) (pmImproveRatio * 100f));
         renderVentBarChart(ventMinsPerDay);
+        renderCo2LineChart(co2Ppm, CO2_THRESHOLD_PPM); // NEW
     }
 
     private void renderWeeklyLineChart(float[] values) {
@@ -170,6 +204,10 @@ public class EnergyActivity extends AppCompatActivity {
         set.setColor(Color.parseColor("#1C7C54"));
         set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         set.setDrawValues(false);
+
+        // (선택) 요약 라인도 채움 그래디언트 넣고 싶으면 아래 2줄 주석 해제
+        // set.setDrawFilled(true);
+        // set.setFillDrawable(ContextCompat.getDrawable(this, R.drawable.fill_line_blue));
 
         weeklyLineChart.setData(new LineData(set));
         weeklyLineChart.getLegend().setEnabled(false);
@@ -228,6 +266,62 @@ public class EnergyActivity extends AppCompatActivity {
         ventBarChart.invalidate();
     }
 
+    // --- CO2 라인차트 렌더 (NEW) ---
+    private void renderCo2LineChart(float[] ppmValues, float thresholdPpm) {
+        if (co2LineChart == null) return;
+
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < ppmValues.length; i++) entries.add(new Entry(i, ppmValues[i]));
+
+        LineDataSet ds = new LineDataSet(entries, "CO₂ (ppm)");
+        ds.setDrawCircles(false);
+        ds.setLineWidth(2f);
+        ds.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        ds.setDrawValues(false);
+        ds.setColor(Color.parseColor("#3B82F6")); // 인디고 블루
+
+        // 영역 채움(그라데이션)
+        ds.setDrawFilled(true);
+        Drawable fill = ContextCompat.getDrawable(this, R.drawable.fill_line_blue);
+        ds.setFillDrawable(fill);
+
+        co2LineChart.setData(new LineData(ds));
+
+        // 축/스타일
+        XAxis x = co2LineChart.getXAxis();
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+        x.setDrawGridLines(false);
+        x.setGranularity(1f);
+
+        YAxis y = co2LineChart.getAxisLeft();
+        y.setTextColor(Color.parseColor("#6B7280"));
+        y.setGridColor(Color.parseColor("#E5E7EB"));
+        y.setAxisMinimum(400f);  // 실외 기준 근처
+        y.setAxisMaximum(2000f);
+
+        co2LineChart.getAxisRight().setEnabled(false);
+        co2LineChart.getDescription().setEnabled(false);
+        Legend legend = co2LineChart.getLegend();
+        legend.setEnabled(false);
+
+        // 임계선
+        LimitLine limit = new LimitLine(thresholdPpm, "임계치 " + ((int) thresholdPpm) + "ppm");
+        limit.setLineColor(Color.parseColor("#EF4444"));
+        limit.setLineWidth(1.2f);
+        limit.setTextColor(Color.parseColor("#EF4444"));
+        limit.setTextSize(10f);
+        y.removeAllLimitLines();
+        y.addLimitLine(limit);
+
+        // 제스처
+        co2LineChart.setDragEnabled(true);
+        co2LineChart.setScaleEnabled(false);
+        co2LineChart.setExtraOffsets(8f, 8f, 8f, 8f);
+
+        co2LineChart.animateY(700);
+        co2LineChart.invalidate();
+    }
+
     /** 미세먼지 ‘개선율’: 1 - (실내/실외가정). 실외가정이 0이거나 실내가 더 낮으면 0~1 범위로 보정 */
     private double calcPmImproveRatio(double indoor, double outdoorRef) {
         if (outdoorRef <= 0) return 0;
@@ -241,6 +335,28 @@ public class EnergyActivity extends AppCompatActivity {
     private double calcLightSavedKwh(int offMinutes, double lampKw, int count) {
         return (offMinutes / 60.0) * (lampKw * count);
         // 예시: 185분, 0.032kW, 12개 -> 1.18 kWh
+    }
+
+    // --- 유틸 (NEW) ---
+    private float avg(float[] xs) {
+        if (xs == null || xs.length == 0) return 0f;
+        float s = 0f;
+        for (float v : xs) s += v;
+        return s / xs.length;
+    }
+
+    private float max(float[] xs) {
+        if (xs == null || xs.length == 0) return 0f;
+        float m = xs[0];
+        for (float v : xs) if (v > m) m = v;
+        return m;
+    }
+
+    private int countAbove(float[] xs, float th) {
+        if (xs == null) return 0;
+        int c = 0;
+        for (float v : xs) if (v > th) c++;
+        return c;
     }
 
     private String formatHhMm(int minutes) {
