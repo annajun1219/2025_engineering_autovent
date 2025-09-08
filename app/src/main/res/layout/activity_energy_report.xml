@@ -210,7 +210,7 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
                             <TextView
-                                android:text="실내 PM2.5 평균"
+                                android:text="실내 예상 PM2.5 평균"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
@@ -229,7 +229,7 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
                             <TextView
-                                android:text="실외(창문 열었을 때) 가정 평균"
+                                android:text="실외 PM2.5 평균"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"

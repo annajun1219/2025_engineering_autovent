@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         // 오프라인 모드: 즉시 성공 처리 + 이메일 저장
         if (OFFLINE_LOGIN) {
             saveEmail(email);
-            Toast.makeText(this, "오프라인 로그인(테스트)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
             goMain();
             return;
         }
